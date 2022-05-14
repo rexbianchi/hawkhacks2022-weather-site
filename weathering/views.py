@@ -1,9 +1,9 @@
 from flask import Blueprint
 
 
-bp = Blueprint('views', __name__, url_prefix='/views')
+bp = Blueprint("views", __name__)
 
 
-@bp.route('/')
-def home():
+@bp.route("/")
+def index():
     pass
