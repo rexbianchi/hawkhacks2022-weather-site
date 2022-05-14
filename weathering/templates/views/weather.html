@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{{ postcode }}
+{% endblock %}
+
+{% block content %}
+<h4>{{ data.city_name + ", " + data.state_name }}</h4>
+{% endblock %}

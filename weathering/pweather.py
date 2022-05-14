@@ -7,11 +7,11 @@ import requests
 import os
 from dotenv import load_dotenv
 
-#
+# Load API from .env file
 load_dotenv()
 STORMGLASS_API_KEY = os.getenv("STORMGLASS_API_KEY")
 
-#
+# This sets the location to US postal codes
 nomi = Nominatim('us')
 
 
