@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 # Load API from .env file
 load_dotenv()
 STORMGLASS_API_KEY = os.getenv("STORMGLASS_API_KEY")
+OPEN_WEATHER_API = os.getenv("OPEN_WEATHER_API_KEY")
 
 # This sets the location to US postal codes
 nomi = Nominatim('us')
@@ -27,12 +28,14 @@ class WeatherData:
         self.state_name = location_response.state_name
 
         # Gets first and last hour of today
-        start = arrow.now().floor('day')
-        end = arrow.now().ceil('day')
+        # start = arrow.now().floor('day')
+        # end = arrow.now().ceil('day')
 
         # Now we make a call to the Stormglass API
-        weather_response = getResponse(self.lat, self.lng, start, end)
+        # weather_response = getResponse(self.lat, self.lng, start, end)
+        weather_response = getOpenWeather(self.lat, self.lng)
         self.json_data = weather_response.json()
+        print(self.json_data)
 
 
 def getResponse(lat, lng, start, end):
@@ -49,6 +52,13 @@ def getResponse(lat, lng, start, end):
         headers={
             'Authorization': STORMGLASS_API_KEY
         }
+    )
+    return response
+
+
+def getOpenWeather(lat, lng):
+    response = requests.get(
+        f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&appid={OPEN_WEATHER_API}&units=imperial'
     )
     return response
 

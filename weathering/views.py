@@ -16,25 +16,29 @@ def home():
 def search():
     error = None
     if request.method == 'POST':
-        postcode = request.form['postcode']
+        zipcode = request.form['zipcode']
 
-        if not postcode:
+        if not zipcode:
             error = 'Postcode is required'
 
         if error:
             flash(error, category='error')
 
-        return redirect('/weather/<postcode>')
+        return redirect(url_for('views.weather', zipcode=zipcode))
 
     return render_template('views/search.html')
 
 
-@bp.route('/weather/<postcode>')
-def weather(postcode):
-    try:
-        data = WeatherData(postcode)
-        return render_template('views/weather.html', postcode=postcode, data=data)
+@bp.route('/weather/<zipcode>', methods=('GET', 'POST'))
+def weather(zipcode):
+    # If POST request, redirect to search (code 307 retains POST)
+    if request.method == 'POST':
+        return redirect(url_for('views.search'), code=307)
 
-    except Exception:
-        flash('Invalid postal code!', category='error')
-        return redirect('/')
+    # try:
+    data = WeatherData(zipcode)
+    return render_template('views/weather.html', zipcode=zipcode, data=data)
+
+    """except Exception:
+        flash('An error occured', category='error')
+        return redirect('/')"""

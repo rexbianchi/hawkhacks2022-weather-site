@@ -1,9 +1,48 @@
 {% extends 'base.html' %}
 
+{% block title %}
+{{ zipcode }}
+{% endblock%}
+
 {% block header %}
-{{ postcode }}
+<strong>Current Weather For: </strong>
+{{ data.city_name + ", " + data.state_name + " " + zipcode }}
 {% endblock %}
 
 {% block content %}
-<h4>{{ data.city_name + ", " + data.state_name }}</h4>
+<table>
+    <tr>
+        <th>Weather:</th>
+        <td>{{ data.json_data['weather'][0]['main'] }}</td>
+    </tr>
+
+    <tr>
+        <th>Temperature (°F):</th>
+        <td> {{
+            data.json_data.main.temp|string
+            }}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Temperature Range (°F):</th>
+        <td> {{
+            data.json_data.main.temp_min|string
+            + " to " +
+            data.json_data.main.temp_max|string
+            }}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Wind Speed (MPH):</th>
+        <td>{{ data.json_data.wind.speed|string }}</td>
+    </tr>
+
+    <tr>
+        <th>Wind Direction:</th>
+        <td>{{ data.json_data.wind.deg|string + "°" }}</td>
+    </tr>
+</table>
+
 {% endblock %}
